@@ -3,25 +3,25 @@ services:
   backend:
     restart: always
     build:
-      context: ./
+      context: ./ # Directorio raíz
       dockerfile: Dockerfile
     volumes:
-      - .:/app
+      - .:/app # Monta todo el directorio del proyecto en /app en el contenedor
     ports:
       - '3000:3000'
       - '9229:9229'
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=${MONGO_URI}
+      - MONGO_URI=${MONGO_URI} # Aquí se usa la variable desde el .env
     command: npm run dev
   mongo:
     image: mongo:latest
     container_name: mongodb
     ports:
-      - '27017:27017'
+      - '27017:27017' # Mapea el puerto de MongoDB al puerto local
     volumes:
-      - mongodb-data:/data/db
+      - mongodb-data:/data/db # Persistencia de datos
 
 volumes:
   mongodb-data:
