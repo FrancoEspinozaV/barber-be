@@ -1,31 +1,44 @@
 import mongoose, { Document, Schema } from 'mongoose'
-export interface IBarber extends Document {
+
+export interface IUser extends Document {
   name: string
+  email: string
+  password: string
   phone: string
-  specialty: string
   createdAt: number
   uuid: string
+  isVerified: boolean
 }
 
-const BarberSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema({
   name: {
     type: String,
     required: true,
+    index: true,
   },
   uuid: {
     type: String,
     required: true,
     unique: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   phone: {
     type: String,
     required: true,
     index: true,
   },
-  specialty: {
-    type: String,
-    default: 'General',
-    index: true,
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Number,
@@ -33,6 +46,4 @@ const BarberSchema: Schema = new Schema({
   },
 })
 
-BarberSchema.index({ name: 1, phone: 1 })
-
-export default mongoose.model<IBarber>('Barber', BarberSchema)
+export default mongoose.model<IUser>('User', UserSchema)

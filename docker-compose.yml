@@ -1,28 +1,29 @@
-version: '3.8'
 services:
   backend:
     restart: always
     build:
-      context: ./ # Directorio raíz
+      context: ./
       dockerfile: Dockerfile
     volumes:
-      - .:/app # Monta todo el directorio del proyecto en /app en el contenedor
+      - .:/app
+      - /app/node_modules
     ports:
       - '3000:3000'
       - '9229:9229'
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=${MONGO_URI} # Aquí se usa la variable desde el .env
-    command: npm run dev
+      - MONGO_URI=${MONGO_URI}
+      - NODE_ENV=development
+      - API_KEY_RESEND=${API_KEY_RESEND}
+      - JWT_SECRET=${JWT_SECRET}
   mongo:
     image: mongo:latest
     container_name: mongodb
     ports:
-      - '27017:27017' # Mapea el puerto de MongoDB al puerto local
+      - '27017:27017'
     volumes:
-      - mongodb-data:/data/db # Persistencia de datos
-
+      - mongodb-data:/data/db
 volumes:
   mongodb-data:
     driver: local

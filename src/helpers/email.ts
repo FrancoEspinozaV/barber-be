@@ -2,23 +2,30 @@ import { Resend } from 'resend'
 import { RESEND_API_KEY } from '../config/config'
 
 const resend = new Resend(RESEND_API_KEY)
+
 interface IEmail {
   from: string
   to: string
   subject: string
   html: string
 }
-export function sendNotifications({ from, to, subject, html }: IEmail) {
+
+export async function sendNotifications({ from, to, subject, html }: IEmail) {
   try {
-    resend.emails.send({
+    const { error } = await resend.emails.send({
       from,
       to,
       subject,
       html,
     })
+
+    if (error) {
+      console.error('Error al enviar el email', error)
+      return false
+    }
     return true
   } catch (error) {
-    console.log('Error al enviar el email', error)
+    console.error('Error al enviar el email', error)
     return false
   }
 }

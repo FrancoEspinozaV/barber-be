@@ -1,5 +1,5 @@
 # Usa una imagen base de Node.js
-FROM node:16
+FROM node:20
 
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Comando para ejecutar el servidor
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
